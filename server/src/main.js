@@ -19,11 +19,13 @@ io.on('connection', function (socket) {
 });
 
 app.get('/all-messages', (req, res) => {
-    db.find({}, (err, docs) => {
-        if (err) {
-            res.sendStatus(500);
-        }
+    db.find({})
+        .sort({timestamp: 1})
+        .exec((err, docs) => {
+            if (err) {
+                res.sendStatus(500);
+            }
         
-        return res.send(docs);
+            return res.send(docs);
     });
 });
