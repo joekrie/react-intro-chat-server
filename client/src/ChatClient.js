@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import io from 'socket.io-client';
 import qwest from 'qwest';
 
-const baseUrl = 'http://localhost:8088';
+const baseUrl = 'http://reactintrochatserver-60954.onmodulus.net';
 
 class ChatClient extends Component {
     constructor(props) {

@@ -4,8 +4,10 @@ var io = require('socket.io')(server);
 var NeDB = require('nedb');
 var cors = require('cors');
 
+var port = process.env.PORT || 8088;
+
 app.use(cors());
-server.listen(8088);
+server.listen(port);
 
 var db = new NeDB({
     filename: 'messages.db',
@@ -24,8 +26,18 @@ app.get('/all-messages', (req, res) => {
         .exec((err, docs) => {
             if (err) {
                 res.sendStatus(500);
+            } else {
+                res.send(docs);
             }
-        
-            return res.send(docs);
+    });
+});
+
+app.get('/clear-messages', (req, res) => {
+    db.remove({}, { multi: true }, (err, numRemoved) => {
+        if (err) {
+            res.sendStatus(500);
+        } else {
+            res.sendStatus(200);
+        }
     });
 });
