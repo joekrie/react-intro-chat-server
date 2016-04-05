@@ -2,8 +2,6 @@ import React, {Component} from 'react';
 import io from 'socket.io-client';
 import qwest from 'qwest';
 
-const baseUrl = 'http://reactintrochatserver-60954.onmodulus.net';
-
 class ChatClient extends Component {
     constructor(props) {
         super(props);
@@ -14,7 +12,7 @@ class ChatClient extends Component {
     }
     
     componentDidMount() {        
-        this.socket = io.connect(baseUrl);
+        this.socket = io.connect(this.props.serverBaseUrl);
         
         this.socket.on('new-message', msg => {
             const newMessages = Object.create(this.state.messages);
@@ -22,11 +20,11 @@ class ChatClient extends Component {
             this.setState({messages: newMessages});
         });
         
-        qwest.get(baseUrl + '/all-messages')
+        qwest.get(this.props.serverBaseUrl + '/all-messages')
             .then((xhr, resp) => this.setState({messages: resp}));
     }
     
-    render() {           
+    render() {
         const send = () => {
             if (this.messageInput.value) {
                 const newMessage = {
